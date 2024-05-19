@@ -1,0 +1,22 @@
+services:
+  app-service:
+    build: .
+    container_name: app-service
+    command: go run ./cmd/main.go
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    volumes:
+      - db:/app/storage-db
+
+  test-api:
+    build: .
+    container_name: test-api
+    command: go test tests/api_test.go
+    env_file:
+      - .env
+
+volumes:
+  db:
